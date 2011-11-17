@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>test per resloader</title>
+<script type="text/javascript" src="../js/resloader.js"></script>
+<!-- <script type="text/javascript" src="../js/resloader-min.js"></script> -->
+<script type="text/javascript">
+	var conf = {
+			jsList : { 
+				a : { name : "a", url : "res/a.js" ,isNotLoaded : true, isNotLocked : true,
+				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : [] },
+				b : { name : "b", url : "res/b.js" ,isNotLoaded : true, isNotLocked : true,
+				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : ["a"] },
+				c : { name : "c", url : "res/c.js" ,isNotLoaded : true, isNotLocked : true,
+				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : ["b"] }
+			},
+			cssList : {
+				a : { name : "a.css", url : "res/a.css", isNotLoaded : true },
+				b : { name : "b.css", url : "res/a.css", isNotLoaded : true }
+			}
+	}
+	
+	window.resloader.loadConfig(conf,function(){
+		window.resloader.loadDynamicJS("c");
+	});
+</script>
+</head>
+<body>
+</body>
+</html>
