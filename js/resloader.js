@@ -16,11 +16,11 @@
 		};
 		
 		this.setUpGetExec = function(getExec){
-			this.getExec = getExec;
+			this.getExec = function(url,ctxt){getExec.call(ctxt,url);};
 		};
 		
-		this.loadHTML = function( htmlName) {
-			this.getExec(this.htmlList[htmlName].url);
+		this.loadHTML = function(htmlName,ctxt) {
+			this.getExec(this.htmlList[htmlName].url,ctxt);
 		};
 		
 		this.waitForDep = function( js ) {
