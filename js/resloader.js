@@ -10,10 +10,16 @@
 			this.cssList = resconf.cssList;
 			this.htmlList = resconf.htmlList;
 			( initCallBack ) && initCallBack();
+			if ( getExec ){
+				this.setUpGetExec(getExec);
+			}
+		};
+		
+		this.setUpGetExec = function(getExec){
 			this.getExec = getExec;
 		};
 		
-		this.loadHtml = function( htmlName) {
+		this.loadHTML = function( htmlName) {
 			this.getExec(this.htmlList[htmlName].url);
 		};
 		
@@ -75,7 +81,7 @@
 			}
 		};
 		
-		this.loadCss = function ( cssName ) {
+		this.loadCSS = function ( cssName ) {
 			var css = this.cssList[cssName];
 			if ( css.isNotLoaded ){
 				var style_tag = document.createElement("link");
@@ -88,13 +94,13 @@
 		};
 		
 		this.docguiInitChain = function() {
-			this.loadCss("uiDefaulTema");
+			this.loadCSS("uiDefaulTema");
 			this.docgui.loadJS("baseWidget");
 		};
 		
 		this.loadCssList = function( cssList ){
 			for ( var i in cssList ){
-				this.loadCss(cssList[i]);
+				this.loadCSS(cssList[i]);
 			}
 		};
 		
