@@ -3,8 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>test per resloader</title>
+<script type="text/javascript" src="res/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="../js/resloader.js"></script>
 <!-- <script type="text/javascript" src="../js/resloader-min.js"></script> -->
+</head>
+<body>
 <script type="text/javascript">
 	var conf = {
 			jsList : { 
@@ -18,14 +21,30 @@
 			cssList : {
 				a : { name : "a.css", url : "res/a.css", isNotLoaded : true },
 				b : { name : "b.css", url : "res/a.css", isNotLoaded : true }
+			},
+			htmlList : {
+				demo : { url: "http:/localhost.hbl.local:8080/jdocgui/docgui/views/plugins/docMetas.html" }
 			}
 	}
 	
-	window.resloader.loadConfig(conf,function(){
-		window.resloader.loadDynamicJS("c");
-	});
+	window.resloader.loadConfig(conf,
+		function(){
+			window.resloader.loadJS("c");
+		},
+		function(url) {
+			$.get(url)
+			.success(function(data){
+				console.log(data);
+			})
+			.error(function(jqXHR, textStatus, errorThrown){
+				console.log(jqXHR.state());
+				console.log(textStatus);
+				console.log(errorThrown);
+			})
+		}
+	);
+	
+	window.resloader.loadHtml("demo");
 </script>
-</head>
-<body>
 </body>
 </html>

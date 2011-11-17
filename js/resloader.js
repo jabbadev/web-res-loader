@@ -3,11 +3,18 @@
 	function resloader() {
 		this.jsList = null;
 		this.cssList = null;
+		this.htmlList = null;
 		
-		this.loadConfig = function(resconf,initCallBack){
+		this.loadConfig = function(resconf,initCallBack,getExec){
 			this.jsList = resconf.jsList;
 			this.cssList = resconf.cssList;
+			this.htmlList = resconf.htmlList;
 			( initCallBack ) && initCallBack();
+			this.getExec = getExec;
+		};
+		
+		this.loadHtml = function( htmlName) {
+			this.getExec(this.htmlList[htmlName].url);
 		};
 		
 		this.waitForDep = function( js ) {
@@ -34,14 +41,14 @@
 			return false;
 		};
 		
-		this.loadDynamicJS = function ( jsName ) {
+		this.loadJS = function ( jsName ) {
 			var self = this;
 			var js = this.jsList[jsName];
 			var dep = js.depon;
 			if ( dep.length > 0 ) {
 				for ( var i in dep ){
 					var jsname = dep[i];
-					this.loadDynamicJS(jsname);
+					this.loadJS(jsname);
 				}
 			}
 						
@@ -68,7 +75,7 @@
 			}
 		};
 		
-		this.loadDynamicCss = function ( cssName ) {
+		this.loadCss = function ( cssName ) {
 			var css = this.cssList[cssName];
 			if ( css.isNotLoaded ){
 				var style_tag = document.createElement("link");
@@ -81,19 +88,19 @@
 		};
 		
 		this.docguiInitChain = function() {
-			this.loadDynamicCss("uiDefaulTema");
-			this.docgui.loadDynamicJS("baseWidget");
+			this.loadCss("uiDefaulTema");
+			this.docgui.loadJS("baseWidget");
 		};
 		
 		this.loadCssList = function( cssList ){
 			for ( var i in cssList ){
-				this.loadDynamicCss(cssList[i]);
+				this.loadCss(cssList[i]);
 			}
 		};
 		
 		this.loadJsList = function( widgetList ){
 			for ( var i in widgetList ){
-				this.loadDynamicJS(widgetList[i]);
+				this.loadJS(widgetList[i]);
 			}
 		};
 		
