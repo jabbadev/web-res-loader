@@ -1,6 +1,8 @@
-(function(global,obj){
+(function(global,config){
+	var wrl = config.wrlNS;
+	var wrlc = config.wrlcNS;
 	
-	function resloader() {
+	function wrl() {
 
 		this.loadConfig = function(jq,rlcURL,callback){
 			var self = this;
@@ -14,10 +16,10 @@
 		};
 		
 		this.setConfig = function(){
-			this.jsList = global.rlconfig.jsList;
-			this.cssList = global.rlconfig.cssList;
-			this.htmlList = global.rlconfig.htmlList;
-		}
+			this.jsList = global[wrlc].jsList;
+			this.cssList = global[wrlc].cssList;
+			this.htmlList = global[wrlc].htmlList;
+		};
 		
 		this._loadJS = function(jsURL,handler){
 			var plugin_script_tag = document.createElement("script");
@@ -139,5 +141,8 @@
 		};
 	};
 	
-	global.resloader = new resloader();
-})(window);
+	global[wrl] = new wrl();
+})(window,{
+	wrlNS : "wrl",
+	wrlcNS : "wrlc"
+});
