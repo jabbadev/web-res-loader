@@ -2,7 +2,8 @@
 	var wrl = config.wrlNS;
 	var wrlc = config.wrlcNS;
 	
-	function wrl() {
+	function webResLoader() {
+		var _wrlc = wrlc;
 
 		this.loadConfig = function(jq,rlcURL,callback){
 			var self = this;
@@ -16,9 +17,10 @@
 		};
 		
 		this.setConfig = function(){
-			this.jsList = global[wrlc].jsList;
-			this.cssList = global[wrlc].cssList;
-			this.htmlList = global[wrlc].htmlList;
+			//alert('global2: ' + _wrlc + "," + global[_wrlc]);
+			this.jsList = global[_wrlc].jsList;
+			this.cssList = global[_wrlc].cssList;
+			this.htmlList = global[_wrlc].htmlList;
 		};
 		
 		this._loadJS = function(jsURL,handler){
@@ -141,7 +143,7 @@
 		};
 	};
 	
-	global[wrl] = new wrl();
+	global[wrl] = new webResLoader();
 })(window,{
 	wrlNS : "wrl",
 	wrlcNS : "wrlc"
