@@ -3,48 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>test per resloader</title>
-<script type="text/javascript" src="res/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="../js/resloader.js"></script>
-<!-- <script type="text/javascript" src="../js/resloader-min.js"></script> -->
+<script type="text/javascript" src="/web-res-loader/demo/res/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/web-res-loader/scripts/web-res-loader.js"></script>
 </head>
 <body>
 <script type="text/javascript">
-	var conf = {
-			jsList : { 
-				a : { name : "a", url : "res/a.js" ,isNotLoaded : true, isNotLocked : true,
-				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : [] },
-				b : { name : "b", url : "res/b.js" ,isNotLoaded : true, isNotLocked : true,
-				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : ["a"] },
-				c : { name : "c", url : "res/c.js" ,isNotLoaded : true, isNotLocked : true,
-				preLoadActivity : function() { return true }, postLoadActivity : function() { return true }, depon : ["b"] }
-			},
-			cssList : {
-				a : { name : "a.css", url : "res/a.css", isNotLoaded : true },
-				b : { name : "b.css", url : "res/a.css", isNotLoaded : true }
-			},
-			htmlList : {
-				demo : { url: "http:/localhost.hbl.local:8080/jdocgui/docgui/views/plugins/docMetas.html" }
-			}
-	}
-	
-	window.resloader.loadConfig(conf,
-		function(){
-			window.resloader.loadJS("c");
-		},
-		function(url) {
-			$.get(url)
-			.success(function(data){
-				console.log(data);
-			})
-			.error(function(jqXHR, textStatus, errorThrown){
-				console.log(jqXHR.state());
-				console.log(textStatus);
-				console.log(errorThrown);
-			})
-		}
-	);
-	
-	window.resloader.loadHtml("demo");
+	this.wrl.loadConfig($,"/web-res-loader/demo/res/demo-config.js",function(){
+		this.wrl.loadRes("js","a",function(){console.log('resource loades');});
+	});
 </script>
 </body>
 </html>
