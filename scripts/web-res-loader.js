@@ -22,7 +22,6 @@
 		};
 		
 		this._attachJS = function(jsURL,eventLoadHandler){
-			console.log('FIRE ATTACH: ',jsURL);
 			var plugin_script_tag = document.createElement("script");
 			plugin_script_tag.setAttribute("type","text/javascript");
 			plugin_script_tag.setAttribute("charset","utf-8");
@@ -39,72 +38,73 @@
 		this._attachCSS = function(cssURL,eventLoadHandler){
 		};
 		
-		this._getChainRes = function(resType,resName) {
-			var self = this;
+		this._getChainRes = function(resType,resName,callback) {
+			var rl = this;
+			
 			var res = function(resType,resName){
 				this.resType = resType;
 				this.resName = resName;
-				this._setAttachRes = function(){
+				this.dep = null;
+				
+				this.setAttach = function(){
+					var self = this;
 					this.attach = function(){
-						if ( this.resType == "js" ){
-							console.log('fire attach: ',resName,resType);
-							self._attachJS(self[resType][resName].url,this.loadHandler);
+						if ( self.resType == "js" ){
+							rl._attachJS(rl[self.resType][self.resName].url,self.onload);
 						}
-						if ( this.resType == "css" ){
-							self._attachCSS(self[resType][resName].url,this.loadHandler);
+						if ( self.resType == "css" ){
+							rl._attachCSS(rl[self.resType][self.resName].url,self.onload);
 						}
 					};
 				};
-				this.attach = null;
-				this._setLoadHandler = function(loadHandler){
-					var _self = this;
-					this.loadHandler = function(){
-						self._waitLoadHandler(_self.resType,_self.resName,loadHandler); 
+				this.setOnLoad = function(nextf){
+					var self = this;
+					this.onload = function(){
+						rl._waitLoadHandler(self.resType,self.resName,self.dep,nextf); 
 					};
 				};
-				this.loadHandler = null;
-				this.nextNameRes = null;
 			};
 			
 			return new res(resType,resName);
 		};
 		
-		this._waitLoadHandler = function(resType,resName,nextLoadHandler) {
-			console.log('next handler: ',resType,resName,nextLoadHandler);
-			/*
-			if ( ! this[resType][resName].isLoaded ){
-				setTimeout(this._waitLoadHandler(resType,resName,nextLoadHandler),0);
-			}
-			else {
-				this.nextLoadHandler;
-			}*/
-			//next = nextLoadHandler;
+		this._waitLoadHandler = function(resType,resName,resDep,nextLoadHandler) {
+			console.log('next handler: ',resType,resName,resDep,nextLoadHandler);
 			nextLoadHandler();
 		};
 		
-		this.buildLoadChain = function(resType,name,chain,callback) {
-			var dep = this[resType][name].depon;
+		this.buildLoadChain = function(resType,resName,chain,callback) {
+			var dep = this[resType][resName].depon;
 			if ( dep ){
 				for( var i in dep ){
 					this.buildLoadChain(resType,dep[i],chain,callback);
-					var res = this._getChainRes(resType,dep[i]);
-					res._setAttachRes();
-					res._setLoadHandler(callback);					
+					var res = this._getChainRes(resType,dep[i],callback);
+					res.setAttach();
+					res.setOnLoad(callback);
+					
+					if ( chain.length > 0 ){
+						res.dep = chain[chain.length-1].resName;
+						chain[chain.length-1].setOnLoad(res.attach);
+					}
+					
 					chain.push(res);
 					
-					if ( chain.length > 1){
-						chain[chain.length-2]._setLoadHandler(function(){res.attach();});
-					}
-						
 				}
 			}
 		};
 		
 		this.loadRes = function(resType,resName,callback) {
 			var chain = [];
-			this.buildLoadChain('js',"a",chain,callback);
-			var res = this._getChainRes("js","a");
-			res._setAttachRes();
+			this.buildLoadChain(resType,resName,chain,callback);
+			
+			var res = this._getChainRes(resType,resName,callback);
+			res.setAttach();
+			res.setOnLoad(callback);
+			
+			if ( chain.length > 0 ){
+				res.dep = chain[chain.length-1].resName;
+				chain[chain.length-1].setOnLoad(res.attach);
+			}
 			chain.push(res);
 			a = chain;
 		};
