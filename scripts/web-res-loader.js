@@ -69,7 +69,17 @@
 		};
 		
 		this._waitLoadHandler = function(resType,resName,resDep,nextLoadHandler) {
-			console.log('next handler: ',resType,resName,resDep,nextLoadHandler);
+			if ( resDep ){
+				if ( this[resType][resName].isNotLoaded ){
+					setTimeout(this._waitLoadHandler(resType,resName,resDep,nextLoadHandler),0);
+				}
+				else {
+					this[resType][resName].isNotLoaded = false;
+				}
+			}
+			else {
+				this[resType][resName].isNotLoaded = false;
+			}
 			nextLoadHandler();
 		};
 		
