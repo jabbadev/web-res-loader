@@ -26,8 +26,8 @@
 			};
 			
 			this.html = {
-				htmlA : { url : "/jdocgui/docgui/views/plugins/docMetas.html" },
-				htmlB : { url : "/jdocgui/docgui/js/plugins/doc-metas/html/docMetas.html" }
+				a : { url : "/jdocgui/docgui/views/plugins/docMetas.html" },
+				b : { url : "/jdocgui/docgui/js/plugins/doc-metas/html/docMetas.html" }
 			};
 	};
 	

@@ -57,7 +57,7 @@
 			}
 		};
 		
-		this._getChainRes = function(resType,resName,callback) {
+		this._getChainRes = function(resType,resName) {
 			var rl = this;
 			var res = function(resType,resName){
 				this.resType = resType;
@@ -99,16 +99,15 @@
 			nextLoadHandler();
 		};
 		
-		this._buildLoadChain = function(resType,resName,chain,callback) {
+		this._buildLoadChain = function(resType,resName,chain) {
 			var dep = this[resType][resName].depon;
 			if ( dep ){
 				for( var i in dep ){
-					this._buildLoadChain(resType,dep[i],chain,callback);
-					var res = this._getChainRes(resType,dep[i],callback);
+					this._buildLoadChain(resType,dep[i],chain);
+					var res = this._getChainRes(resType,dep[i]);
 					res.setAttach();
 					
 					if (resType == "js"){
-						res.setOnLoad(callback);
 						if ( chain.length > 0 ){
 							res.dep = chain[chain.length-1].resName;
 							chain[chain.length-1].setOnLoad(res.attach);
@@ -120,14 +119,13 @@
 			}
 		};
 		
-		this._loadRes = function(resType,resName,callback) {
+		this._loadRes = function(resType,resName,callback,ctxt) {
 			var chain = [];
-			this._buildLoadChain(resType,resName,chain,callback);
+			this._buildLoadChain(resType,resName,chain);
 			
-			var res = this._getChainRes(resType,resName,callback);
+			var res = this._getChainRes(resType,resName);
 			res.setAttach();
-			if( resType == "js"){
-				res.setOnLoad(callback);	
+			if( resType == "js"){	
 				if ( chain.length > 0 ){
 					res.dep = chain[chain.length-1].resName;
 					chain[chain.length-1].setOnLoad(res.attach);
@@ -136,19 +134,24 @@
 			
 			chain.push(res);
 			
+			var c = ctxt || global;
+			if ( typeof(callback) === "function" ) {
+				chain[chain.length-1].setOnLoad(this.jq.proxy(callback,c));
+			}
+			
 			( resType == "js" ) && chain[0].attach();
 			if ( resType == "css" ){
 				this.jq.each(chain,function(i,res){ res.attach(); });
-				( typeof(callback) === "function" ) && callback();
+				( typeof(callback) === "function" ) && (this.jq.proxy(callback,c))();
 			}
 		};
 		
-		this.loadJS = function(resName,callback){
-			this._loadRes("js",resName,callback);
+		this.loadJS = function(resName,callback,ctxt){
+			this._loadRes("js",resName,callback,ctxt);
 		};
 		
-		this.loadCSS = function(resName,callback){
-			this._loadRes("css",resName,callback);
+		this.loadCSS = function(resName,callback,ctxt){
+			this._loadRes("css",resName,callback,ctxt);
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {
