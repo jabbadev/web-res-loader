@@ -1,1 +1,1 @@
-console.log('b.js');
+log.debug('b.js is loaded ');

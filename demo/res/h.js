@@ -1,1 +1,1 @@
-console.log('h.js');
+log.debug('h.js is loaded ');

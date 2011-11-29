@@ -1,1 +1,1 @@
-console.log('g.js');
+log.debug('g.js is loaded ');

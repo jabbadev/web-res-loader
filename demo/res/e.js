@@ -1,1 +1,1 @@
-console.log('e.js');
+log.debug('e.js is loaded ');

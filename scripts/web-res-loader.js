@@ -35,12 +35,28 @@
 			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(plugin_script_tag);
 		};
 		
-		this._attachCSS = function(cssURL,eventLoadHandler){
+		this._attachCSS = function(cssURL){
+			var style_tag = document.createElement("link");
+			style_tag.setAttribute("type","text/css");
+			style_tag.setAttribute("rel","stylesheet");
+			style_tag.setAttribute("href",cssURL);
+			(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(style_tag);
+		};
+		
+		this._attachRES = function(resType,resName,eventLoadHandler){
+			if ( ! this[resType][resName].isAttach ){
+				if (resType == "js" ){
+					this._attachJS(this[resType][resName].url,eventLoadHandler);
+				}
+				if (resType == "css"){
+					this._attachCSS(this[resType][resName].url);
+				}
+				this[resType][resName].isAttach = true;
+			}
 		};
 		
 		this._getChainRes = function(resType,resName,callback) {
 			var rl = this;
-			
 			var res = function(resType,resName){
 				this.resType = resType;
 				this.resName = resName;
@@ -50,10 +66,10 @@
 					var self = this;
 					this.attach = function(){
 						if ( self.resType == "js" ){
-							rl._attachJS(rl[self.resType][self.resName].url,self.onload);
+							rl._attachRES(self.resType,self.resName,self.onload);
 						}
 						if ( self.resType == "css" ){
-							rl._attachCSS(rl[self.resType][self.resName].url,self.onload);
+							rl._attachRES(self.resType,self.resName);
 						}
 					};
 				};
@@ -70,16 +86,12 @@
 		
 		this._waitLoadHandler = function(resType,resName,resDep,nextLoadHandler) {
 			if ( resDep ){
-				if ( this[resType][resName].isNotLoaded ){
+				if ( this[resType][resName].isLoaded || false ){
 					setTimeout(this._waitLoadHandler(resType,resName,resDep,nextLoadHandler),0);
 				}
-				else {
-					this[resType][resName].isNotLoaded = false;
-				}
 			}
-			else {
-				this[resType][resName].isNotLoaded = false;
-			}
+			this[resType][resName].isLoaded = true;
+			
 			nextLoadHandler();
 		};
 		
@@ -96,9 +108,7 @@
 						res.dep = chain[chain.length-1].resName;
 						chain[chain.length-1].setOnLoad(res.attach);
 					}
-					
 					chain.push(res);
-					
 				}
 			}
 		};
@@ -116,7 +126,7 @@
 				chain[chain.length-1].setOnLoad(res.attach);
 			}
 			chain.push(res);
-			a = chain;
+			chain[0].attach();
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {
@@ -129,76 +139,6 @@
 				success : proxySuccess,
 				error : proxyError
 			});
-		};
-		
-		this.waitForDep = function( js ) {
-			var self = this;
-			if ( this.depNotReady( js.depon ) ) {
-				setTimeout(function(){self.waitForDep( js );},1);
-			}
-		};
-		
-		this.notifyJsLoaded = function( js ) {
-			js.postLoadActivity();
-			this.js[js.name].isNotLoaded = false;
-			/* this.jsList[js.name].isNotLocked = false; */
-			/* console.log('notifyJsLoaded [ ' + js.name + ' ]'); */
-		};
-		
-		this.depNotReady = function( depToWait ){
-			for( var i in depToWait ){
-				var _js = this.js[depToWait[i]];
-				if( _js.isNotLoaded ) {
-					return _js.isNotLoaded;
-				}
-			}
-			return false;
-		};
-		
-		this.loadJS = function ( jsName ) {
-			var self = this;
-			var js = this.js[jsName];
-			var dep = js.depon;
-			if ( dep.length > 0 ) {
-				for ( var i in dep ){
-					var jsname = dep[i];
-					this.loadJS(jsname);
-				}
-			}
-						
-			if ( js.isNotLoaded ){
-				if ( js.isNotLocked ){
-					js.isNotLocked = false;
-					if ( js.preLoadActivity() ) {
-						
-						var plugin_script_tag = document.createElement("script");
-						plugin_script_tag.setAttribute("type","text/javascript");
-						plugin_script_tag.setAttribute("charset","utf-8");
-						plugin_script_tag.setAttribute("src", js.url);
-						plugin_script_tag.onload = function() { self.notifyJsLoaded( js ); };
-						plugin_script_tag.onreadystatechange = function () { /* Same thing but for IE */
-							if (this.readyState == "complete" || this.readyState == "loaded") {
-								self.notifyJsLoaded( js );
-						    }
-						};
-						(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(plugin_script_tag);
-						
-						this.waitForDep( js );
-					}
-				}
-			}
-		};
-		
-		this.loadCSS = function ( cssName ) {
-			var css = this.css[cssName];
-			if ( css.isNotLoaded ){
-				var style_tag = document.createElement("link");
-				style_tag.setAttribute("type","text/css");
-				style_tag.setAttribute("rel","stylesheet");
-				style_tag.setAttribute("href",css.url);
-				(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(style_tag);
-				this.css[cssName].isNotLoaded = false;
-			}
 		};
 		
 		this.loadCssList = function( cssList ){

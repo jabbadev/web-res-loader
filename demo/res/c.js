@@ -1,1 +1,1 @@
-console.log('c.js');
+log.debug('c.js is loaded ');

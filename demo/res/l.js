@@ -1,1 +1,1 @@
-console.log('l.js');
+log.debug('l.js is loaded ');

@@ -1,1 +1,1 @@
-console.log('d.js');
+log.debug('d.js is loaded ');

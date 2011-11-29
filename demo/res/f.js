@@ -1,1 +1,1 @@
-console.log('f.js');
+log.debug('f.js is loaded ');
