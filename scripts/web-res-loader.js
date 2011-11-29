@@ -102,12 +102,15 @@
 					this.buildLoadChain(resType,dep[i],chain,callback);
 					var res = this._getChainRes(resType,dep[i],callback);
 					res.setAttach();
-					res.setOnLoad(callback);
 					
-					if ( chain.length > 0 ){
-						res.dep = chain[chain.length-1].resName;
-						chain[chain.length-1].setOnLoad(res.attach);
+					if (resType == "js"){
+						res.setOnLoad(callback);
+						if ( chain.length > 0 ){
+							res.dep = chain[chain.length-1].resName;
+							chain[chain.length-1].setOnLoad(res.attach);
+						}
 					}
+					
 					chain.push(res);
 				}
 			}
@@ -119,14 +122,24 @@
 			
 			var res = this._getChainRes(resType,resName,callback);
 			res.setAttach();
-			res.setOnLoad(callback);
-			
-			if ( chain.length > 0 ){
-				res.dep = chain[chain.length-1].resName;
-				chain[chain.length-1].setOnLoad(res.attach);
+			if( resType == "js"){
+				res.setOnLoad(callback);	
+				if ( chain.length > 0 ){
+					res.dep = chain[chain.length-1].resName;
+					chain[chain.length-1].setOnLoad(res.attach);
+				}
 			}
+			
 			chain.push(res);
-			chain[0].attach();
+			
+			if ( resType == "js" )
+				chain[0].attach();
+			
+			if ( resType == "css" ){
+				console.log(chain);
+				this.jq.each(chain,function(i,res){ res.attach(); });
+				( typeof(callback) === "function" ) && callback();
+			}
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {

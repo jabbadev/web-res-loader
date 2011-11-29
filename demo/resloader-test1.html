@@ -9,14 +9,13 @@
 </script>
 <script type="text/javascript" src="/web-res-loader/demo/res/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="/web-res-loader/scripts/web-res-loader.js"></script>
-<link type="text/css" rel="stylesheet" href="/web-res-loader/demo/res/b.css" />
-<link type="text/css" rel="stylesheet" href="/web-res-loader/demo/res/a.css" onload="alert('a.css is loaded')"/>
 </head>
 <body>
 <script type="text/javascript">
 	this.wrl.loadConfig($,"/web-res-loader/demo/res/demo-config.js",function(){
-		this.wrl.loadRes("js","l",function(){log.debug('RESOURCE LOADED');});
 		this.wrl.loadRes("js","a",function(){log.debug('RESOURCE LOADED');});
+		this.wrl.loadRes("css","a",function(){log.debug('CSS IS LOADED');});
+		this.wrl.loadRes("css","a",function(){log.debug('CSS IS LOADED');});
 	});
 	
 </script>

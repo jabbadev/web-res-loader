@@ -16,8 +16,8 @@
 			};
 			
 			this.css = {
-				cssA : { name : "cssA", url : "/jdocgui/docgui/js/plugins/doc-metas/css/docMetas.css" },
-				cssB : { name : "cssB", url : "/jdocgui/docgui/js/plugins/docgui-widget/css/docgui-table.css" }
+				a : { name : "a", url : "/web-res-loader/demo/res/a.css", depon : ["b"] },
+				b : { name : "b", url : "/web-res-loader/demo/res/b.css" }
 			};
 			
 			this.html = {
