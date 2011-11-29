@@ -13,11 +13,9 @@
 <body>
 <script type="text/javascript">
 	this.wrl.loadConfig($,"/web-res-loader/demo/res/demo-config.js",function(){
-		this.wrl.loadRes("js","a",function(){log.debug('RESOURCE LOADED');});
-		this.wrl.loadRes("css","a",function(){log.debug('CSS IS LOADED');});
-		this.wrl.loadRes("css","a",function(){log.debug('CSS IS LOADED');});
+		this.wrl.loadJS("a",function(){log.debug('RESOURCE LOADED');});
+		this.wrl.loadCSS("a",function(){log.debug('CSS IS LOADED');});
 	});
-	
 </script>
 <p>prova</p>
 </body>

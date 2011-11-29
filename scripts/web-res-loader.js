@@ -95,11 +95,11 @@
 			nextLoadHandler();
 		};
 		
-		this.buildLoadChain = function(resType,resName,chain,callback) {
+		this._buildLoadChain = function(resType,resName,chain,callback) {
 			var dep = this[resType][resName].depon;
 			if ( dep ){
 				for( var i in dep ){
-					this.buildLoadChain(resType,dep[i],chain,callback);
+					this._buildLoadChain(resType,dep[i],chain,callback);
 					var res = this._getChainRes(resType,dep[i],callback);
 					res.setAttach();
 					
@@ -116,9 +116,9 @@
 			}
 		};
 		
-		this.loadRes = function(resType,resName,callback) {
+		this._loadRes = function(resType,resName,callback) {
 			var chain = [];
-			this.buildLoadChain(resType,resName,chain,callback);
+			this._buildLoadChain(resType,resName,chain,callback);
 			
 			var res = this._getChainRes(resType,resName,callback);
 			res.setAttach();
@@ -132,14 +132,19 @@
 			
 			chain.push(res);
 			
-			if ( resType == "js" )
-				chain[0].attach();
-			
+			( resType == "js" ) && chain[0].attach();
 			if ( resType == "css" ){
-				console.log(chain);
 				this.jq.each(chain,function(i,res){ res.attach(); });
 				( typeof(callback) === "function" ) && callback();
 			}
+		};
+		
+		this.loadJS = function(resName,callback){
+			this._loadRes("js",resName,callback);
+		};
+		
+		this.loadCSS = function(resName,callback){
+			this._loadRes("css",resName,callback);
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {
@@ -153,7 +158,7 @@
 				error : proxyError
 			});
 		};
-		
+		/*
 		this.loadCssList = function( cssList ){
 			for ( var i in cssList ){
 				this.loadCSS(cssList[i]);
@@ -176,6 +181,7 @@
 				callback();
 			}
 		};
+		*/
 	};
 	
 	global[wrl] = new webResLoader();
