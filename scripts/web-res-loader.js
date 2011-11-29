@@ -45,11 +45,13 @@
 		
 		this._attachRES = function(resType,resName,eventLoadHandler){
 			if ( ! this[resType][resName].isAttach ){
+				(typeof(this[resType][resName].preLoad)==="function") && this[resType][resName].preLoad();
 				if (resType == "js" ){
 					this._attachJS(this[resType][resName].url,eventLoadHandler);
 				}
 				if (resType == "css"){
 					this._attachCSS(this[resType][resName].url);
+					(typeof(this[resType][resName].postLoad)==="function") && this[resType][resName].postLoad();
 				}
 				this[resType][resName].isAttach = true;
 			}
@@ -91,6 +93,8 @@
 				}
 			}
 			this[resType][resName].isLoaded = true;
+			
+			( typeof(this[resType][resName].postLoad)==="function" ) && this[resType][resName].postLoad();
 			
 			nextLoadHandler();
 		};
