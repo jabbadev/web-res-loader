@@ -162,30 +162,7 @@
 				error : proxyError
 			});
 		};
-		/*
-		this.loadCssList = function( cssList ){
-			for ( var i in cssList ){
-				this.loadCSS(cssList[i]);
-			}
-		};
-		
-		this.loadJsList = function(widgetList,callback,ctxt){
-			for ( var i in widgetList ){
-				this.loadJS(widgetList[i]);
-			}
-			var proxyCallback = this.jq.proxy(callback,ctxt);
-			this.jsAreReady(widgetList,proxyCallback);
-		};
-		
-		this.jsAreReady = function ( jsList, callback ) {
-			var self = this;
-			if ( this.depNotReady(jsList)){
-				setTimeout( function(){self.jsAreReady(jsList,callback);},1 );
-			}else {
-				callback();
-			}
-		};
-		*/
+
 	};
 	
 	global[wrl] = new webResLoader();
