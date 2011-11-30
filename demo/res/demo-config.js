@@ -25,6 +25,7 @@
 					preLoad : function(){ log.debug("Exec pre load activity of css g ..."); },
 					postLoad : function(){ log.debug("Exec post load activity of css g ..."); }
 				},
+				c : { name : "c", url : "/web-res-loader/demo/res/c.css" },
 				resBundle : { name : "resBundle" ,  depon : ["a","b"]}
 			};
 			

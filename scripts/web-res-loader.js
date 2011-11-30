@@ -152,12 +152,30 @@
 			}
 		};
 		
-		this.loadJS = function(resName,callback,ctxt){
-			this._loadRes("js",resName,callback,ctxt);
+		this.loadJS = function(resNames,callback,ctxt){
+			var self = this;
+			var lastRes = null;
+			if ( this.jq.isArray(resNames) ){
+				lastRes = resNames.pop();
+				this.jq.each(resNames,function(i,rn){self._loadRes("js",rn);});
+			}
+			else { 
+				lastRes = resNames;
+			}
+			this._loadRes("js",lastRes,callback,ctxt);
 		};
 		
-		this.loadCSS = function(resName,callback,ctxt){
-			this._loadRes("css",resName,callback,ctxt);
+		this.loadCSS = function(resNames,callback,ctxt){
+			var self = this;
+			var lastRes = null;
+			if ( this.jq.isArray(resNames) ){
+				lastRes = resNames.pop();
+				this.jq.each(resNames,function(i,rn){self._loadRes("css",rn);});
+			}
+			else {
+				lastRes = resNames;
+			}
+			this._loadRes("css",lastRes,callback,ctxt);
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {

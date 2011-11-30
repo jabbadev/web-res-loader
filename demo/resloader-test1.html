@@ -19,9 +19,11 @@
 		//this.wrl.loadJS("a");
 		//this.wrl.loadJS("a",function(){log.debug('RESOURCE LOADED');});
 		//this.wrl.loadJS("virtual",function(){log.debug('VIRTUAL RESOURCE LOADED');});
-		this.wrl.loadJS("m",function(){log.debug('VIRTUAL RESOURCE LOADED');});
+		//this.wrl.loadJS("m",function(){log.debug('VIRTUAL RESOURCE LOADED');});
 		//this.wrl.loadCSS("a",function(){log.debug('CSS IS LOADED');});
-		this.wrl.loadCSS("resBundle",function(){log.debug('CSS IS LOADED');});
+		//this.wrl.loadCSS("resBundle",function(){log.debug('CSS IS LOADED');});
+		this.wrl.loadJS(["i","l"],function(){log.debug('LOAD AS ARRAY ...'); });
+		this.wrl.loadCSS(["b","c"],function(){log.debug('CSS IS LOADED');});
 	});
 </script>
 <p>prova</p>
