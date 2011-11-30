@@ -135,9 +135,8 @@
 			chain.push(res);
 			
 			var c = ctxt || global;
-			if ( typeof(callback) === "function" ) {
-				chain[chain.length-1].setOnLoad(this.jq.proxy(callback,c));
-			}
+			var f = typeof(callback) === "function" && this.jq.proxy(callback,c) || function(){};
+			chain[chain.length-1].setOnLoad(f);
 			
 			( resType == "js" ) && chain[0].attach();
 			if ( resType == "css" ){
