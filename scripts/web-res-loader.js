@@ -41,11 +41,13 @@
 		};
 		
 		this._attachCSS = function(cssURL){
-			var style_tag = document.createElement("link");
-			style_tag.setAttribute("type","text/css");
-			style_tag.setAttribute("rel","stylesheet");
-			style_tag.setAttribute("href",cssURL);
-			(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(style_tag);
+			if ( cssURL ){
+				var style_tag = document.createElement("link");
+				style_tag.setAttribute("type","text/css");
+				style_tag.setAttribute("rel","stylesheet");
+				style_tag.setAttribute("href",cssURL);
+				(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(style_tag);
+			}
 		};
 		
 		this._attachRES = function(resType,resName,eventLoadHandler){

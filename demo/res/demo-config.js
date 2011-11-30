@@ -24,12 +24,13 @@
 				b : { name : "b", url : "/web-res-loader/demo/res/b.css", 
 					preLoad : function(){ log.debug("Exec pre load activity of css g ..."); },
 					postLoad : function(){ log.debug("Exec post load activity of css g ..."); }
-				}
+				},
+				resBundle : { name : "resBundle" ,  depon : ["a","b"]}
 			};
 			
 			this.html = {
 				a : { url : "/jdocgui/docgui/views/plugins/docMetas.html" },
-				b : { url : "/jdocgui/docgui/js/plugins/doc-metas/html/docMetas.html" }
+				b : { url : "/jdocgui/docgui/js/plugins/doc-metas/html/docMetas.html" },
 			};
 	};
 	
