@@ -15,10 +15,12 @@
 	var a = { chain : "" };
 
 	this.wrl.loadConfig($,"/web-res-loader/demo/res/demo-config.js",function(){
-		this.wrl.loadJS("a",function(){this.chain = "loaded"; log.debug(this.chain);},a);
+		//this.wrl.loadJS("a",function(){this.chain = "loaded"; log.debug(this.chain);},a);
 		//this.wrl.loadJS("a");
 		//this.wrl.loadJS("a",function(){log.debug('RESOURCE LOADED');});
-		this.wrl.loadCSS("a",function(){log.debug('CSS IS LOADED');});
+		//this.wrl.loadJS("virtual",function(){log.debug('VIRTUAL RESOURCE LOADED');});
+		this.wrl.loadJS("m",function(){log.debug('VIRTUAL RESOURCE LOADED');});
+		//this.wrl.loadCSS("a",function(){log.debug('CSS IS LOADED');});
 	});
 </script>
 <p>prova</p>

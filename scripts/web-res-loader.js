@@ -22,17 +22,22 @@
 		};
 		
 		this._attachJS = function(jsURL,eventLoadHandler){
-			var plugin_script_tag = document.createElement("script");
-			plugin_script_tag.setAttribute("type","text/javascript");
-			plugin_script_tag.setAttribute("charset","utf-8");
-			plugin_script_tag.setAttribute("src",jsURL);
-			plugin_script_tag.onload = eventLoadHandler;
-			plugin_script_tag.onreadystatechange = function () { /* Same thing but for IE */
-				if (this.readyState == "complete" || this.readyState == "loaded") {
-					eventLoadHandler();
-			    }
-			};
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(plugin_script_tag);
+			if ( jsURL ){
+				var plugin_script_tag = document.createElement("script");
+				plugin_script_tag.setAttribute("type","text/javascript");
+				plugin_script_tag.setAttribute("charset","utf-8");
+				plugin_script_tag.setAttribute("src",jsURL);
+				plugin_script_tag.onload = eventLoadHandler;
+				plugin_script_tag.onreadystatechange = function () { /* Same thing but for IE */
+					if (this.readyState == "complete" || this.readyState == "loaded") {
+						eventLoadHandler();
+				    }
+				};
+				(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(plugin_script_tag);
+			}
+			else {
+				eventLoadHandler();
+			}
 		};
 		
 		this._attachCSS = function(cssURL){

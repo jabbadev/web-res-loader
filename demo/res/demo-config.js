@@ -14,7 +14,9 @@
 					preLoad : function() {log.debug("Exec pre load activity of g ...");}},
 				h: { name : "h", url : "/web-res-loader/demo/res/h.js", depon : ["c","d"] },
 				i: { name : "i", url : "/web-res-loader/demo/res/i.js"},
-				l: { name : "l", url : "/web-res-loader/demo/res/l.js"}
+				l: { name : "l", url : "/web-res-loader/demo/res/l.js"},
+				virtual : { name : "virtual", depon : ["l","i"] },
+				m :  { name : "m", depon : ["virtual","h"] }
 			};
 			
 			this.css = {
