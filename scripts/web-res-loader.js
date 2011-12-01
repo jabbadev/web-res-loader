@@ -106,29 +106,31 @@
 			nextLoadHandler();
 		};
 		
-		this._buildLoadChain = function(resType,resName,chain) {
+		this._buildLoadChain = function(resType,resName,chain,chainNames) {
 			var dep = this[resType][resName].depon;
 			if ( dep ){
-				for( var i in dep ){
-					this._buildLoadChain(resType,dep[i],chain);
-					var res = this._getChainRes(resType,dep[i]);
-					res.setAttach();
-					
-					if (resType == "js"){
-						if ( chain.length > 0 ){
-							res.dep = chain[chain.length-1].resName;
-							chain[chain.length-1].setOnLoad(res.attach);
+				for( var i in dep ){ 
+					this._buildLoadChain(resType,dep[i],chain,chainNames);
+					if ( this.jq.inArray(dep[i],chainNames) == -1 ){
+						var res = this._getChainRes(resType,dep[i]);
+						res.setAttach();
+						
+						if (resType == "js"){
+							if ( chain.length > 0 ){
+								res.dep = chain[chain.length-1].resName;
+								chain[chain.length-1].setOnLoad(res.attach);
+							}
 						}
+						chain.push(res);
+						chainNames.push(dep[i]);
 					}
-					
-					chain.push(res);
 				}
 			}
 		};
 		
 		this._loadRes = function(resType,resName,callback,ctxt) {
-			var chain = [];
-			this._buildLoadChain(resType,resName,chain);
+			var chain = []; var chainNames = [];
+			this._buildLoadChain(resType,resName,chain,chainNames);
 			
 			var res = this._getChainRes(resType,resName);
 			res.setAttach();

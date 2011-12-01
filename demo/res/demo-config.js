@@ -16,7 +16,9 @@
 				i: { name : "i", url : "/web-res-loader/demo/res/i.js"},
 				l: { name : "l", url : "/web-res-loader/demo/res/l.js"},
 				virtual : { name : "virtual", depon : ["l","i"] },
-				m :  { name : "m", depon : ["virtual","h"] }
+				m :  { name : "m", depon : ["virtual","h"] },
+				n :  { name : "n", url : "/web-res-loader/demo/res/n.js", depon : ["i","o"] },
+				o :  { name : "o", url : "/web-res-loader/demo/res/o.js", depon : ["i"] }
 			};
 			
 			this.css = {
