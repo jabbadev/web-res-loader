@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>test per resloader</title>
+<script type="text/javascript" src="/web-res-loader/demo/res/log4javascript.js"></script>
+<script type="text/javascript">
+	var log = log4javascript.getDefaultLogger();
+</script>
+<script type="text/javascript" src="/web-res-loader/demo/res/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/web-res-loader/scripts/web-res-loader.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	var a = { chain : "" };
+
+	this.wrl.loadConfig($,"/web-res-loader/demo/res/demo-config.js",function(){
+		//this.wrl.loadJS("a",function(){this.chain = "loaded"; log.debug(this.chain);},a);
+		//this.wrl.loadJS("a");
+		//this.wrl.loadJS("a",function(){log.debug('RESOURCE LOADED');});
+		//this.wrl.loadJS("virtual",function(){log.debug('VIRTUAL RESOURCE LOADED');});
+		//this.wrl.loadJS("m",function(){log.debug('VIRTUAL RESOURCE LOADED');});
+		//this.wrl.loadCSS("a",function(){log.debug('CSS IS LOADED');});
+		//this.wrl.loadCSS("resBundle",function(){log.debug('CSS IS LOADED');});
+		//this.wrl.loadJS(["i","l"],function(){log.debug('LOAD AS ARRAY ...'); });
+		//this.wrl.loadCSS(["b","c"],function(){log.debug('CSS IS LOADED');});
+		this.wrl.loadJS("n",function(){log.debug('problema di recursion');});
+	});
+</script>
+<p>prova</p>
+</body>
+</html>
