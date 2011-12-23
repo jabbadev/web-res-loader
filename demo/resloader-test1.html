@@ -24,7 +24,11 @@
 		//this.wrl.loadCSS("resBundle",function(){log.debug('CSS IS LOADED');});
 		//this.wrl.loadJS(["i","l"],function(){log.debug('LOAD AS ARRAY ...'); });
 		//this.wrl.loadCSS(["b","c"],function(){log.debug('CSS IS LOADED');});
-		this.wrl.loadJS("n",function(){log.debug('problema di recursion');});
+		log.debug(this.wrl.checkConfig("js","xxxxx"));
+		log.debug(this.wrl.checkConfig("js","a"));
+		this.wrl.loadJS("xxx",function(){log.debug('problema di recursion');});
+		this.wrl.loadCSS("a",function(){log.debug('problema di recursion');});
+		this.wrl.loadHTML("xxx",function(){log.debug('problema di recursion');});
 	});
 </script>
 <p>prova</p>

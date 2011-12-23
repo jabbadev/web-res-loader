@@ -154,17 +154,21 @@
 			}
 		};
 		
+		this.checkConfig = function(resType,resName){
+			return this[resType][resName];
+		};
+		
 		this.loadJS = function(resNames,callback,ctxt){
 			var self = this;
 			var lastRes = null;
 			if ( this.jq.isArray(resNames) ){
 				lastRes = resNames.pop();
-				this.jq.each(resNames,function(i,rn){self._loadRes("js",rn);});
+				this.jq.each(resNames,function(i,rn){ self.checkConfig("js",rn) && self._loadRes("js",rn); });
 			}
 			else { 
 				lastRes = resNames;
 			}
-			this._loadRes("js",lastRes,callback,ctxt);
+			self.checkConfig("js",lastRes) && this._loadRes("js",lastRes,callback,ctxt);
 		};
 		
 		this.loadCSS = function(resNames,callback,ctxt){
@@ -172,24 +176,25 @@
 			var lastRes = null;
 			if ( this.jq.isArray(resNames) ){
 				lastRes = resNames.pop();
-				this.jq.each(resNames,function(i,rn){self._loadRes("css",rn);});
+				this.jq.each(resNames,function(i,rn){ self.checkConfig("css",rn) && self._loadRes("css",rn);});
 			}
 			else {
 				lastRes = resNames;
 			}
-			this._loadRes("css",lastRes,callback,ctxt);
+			self.checkConfig("css",lastRes) && this._loadRes("css",lastRes,callback,ctxt);
 		};
 			
 		this.loadHTML = function(htmlName,success,error,ctxt,async) {
-			var proxySuccess = this.jq.proxy(success,ctxt);
-			var proxyError = this.jq.proxy(error,ctxt);
-			
-			this.jq.ajax({
-				async : ( async === undefined && true ) || async,
-				url : this.html[htmlName].url,
-				success : proxySuccess,
-				error : proxyError
-			});
+			if ( this.checkConfig("html",htmlName) ) {
+				var proxySuccess = this.jq.proxy(success,ctxt);
+				var proxyError = this.jq.proxy(error,ctxt);			
+				this.jq.ajax({
+					async : ( async === undefined && true ) || async,
+					url : this.html[htmlName].url,
+					success : proxySuccess,
+					error : proxyError
+				});
+			}
 		};
 
 	};
