@@ -109,7 +109,7 @@
 		this._buildLoadChain = function(resType,resName,chain,chainNames) {
 			var dep = this[resType][resName].depon;
 			if ( dep ){
-				for( var i in dep ){ 
+				for( var i=0; i < dep.length; i++ ){ 
 					this._buildLoadChain(resType,dep[i],chain,chainNames);
 					if ( this.jq.inArray(dep[i],chainNames) == -1 ){
 						var res = this._getChainRes(resType,dep[i]);
